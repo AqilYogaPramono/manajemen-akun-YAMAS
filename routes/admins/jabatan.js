@@ -1,7 +1,7 @@
 const express = require('express')
 
 const Admin = require('../../models/Admin')
-const Jabatan = require('../../models/jabatan')
+const Jabatan = require('../../models/Jabatan')
 const { authAdmin } = require('../../middlewares/auth')
 
 const router = express.Router()

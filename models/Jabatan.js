@@ -72,6 +72,15 @@ class Jabatan {
             throw err
         }
     }
+
+    static async storePegawaiJabatan(id_pegawai, id_jabatan) {
+        try {
+            const [result] = await connection.query('INSERT INTO pegawai_jabatan (id_pegawai, id_jabatan) VALUES (?, ?)', [id_pegawai, id_jabatan])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = Jabatan
