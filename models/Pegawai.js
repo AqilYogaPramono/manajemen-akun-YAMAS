@@ -56,6 +56,70 @@ class Pegawai {
             throw err
         }
     }
+
+    static async getAll() {
+        try {
+            const [rows] = await connection.query(`SELECT p.id, p.nama, p.nomor_pegawai, p.status_akun, COALESCE(GROUP_CONCAT(DISTINCT j.nama_jabatan ORDER BY j.nama_jabatan SEPARATOR ', '), '-') AS jabatan FROM pegawai AS p LEFT JOIN pegawai_jabatan AS pj ON p.id = pj.id_pegawai LEFT JOIN jabatan AS j ON pj.id_jabatan = j.id GROUP BY p.id, p.nama, p.nomor_pegawai, p.status_akun ORDER BY p.waktu_dibuat DESC`)
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async store(data) {
+        try {
+            const [result] = await connection.query(`insert into pegawai set ?`,[data])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async updateStatusAccount(data, id) {
+        try {
+            const [result] = await connection.query(`update pegawai set status_akun = ? where nomor_pegawai = ?`,[data.status_akun, id])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async delete(id) {
+        try {
+            const [result] = await connection.query(`delete from pegawai where id = ?`, [id])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getLastId() {
+        try {
+            const [rows] = await connection.query(`SELECT MAX(id) AS id FROM pegawai`)
+            console.log(rows[0].id)
+            return rows[0].id
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getById(id) {
+        try {
+            const [rows] = await connection.query('SELECT * FROM pegawai WHERE id = ?',[id])
+            return rows[0]
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async resetPassoword(id)  {
+        try {
+            const [result] = await connection.query(`update pegawai set status_akun = NULL, kata_sandi = NULL where id = ?`,[id])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = Pegawai

@@ -1,0 +1,49 @@
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Pegawai' }) %>
+<%- include('../../partials/navs/__nav-admin.ejs') %>
+<%- include('../../partials/messages/__messages-dashbaord.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Tambah Pegawai</h4>
+                  <form action="/admin/pegawai/create" method="POST" data-loading>
+                    <div class="form-group">
+                      <label for="nama">Nama Pegawai</label>
+                      <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama pegawai" value="<%= (typeof data != 'undefined' && data.nama) || '' %>" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="id_jabatan">Jabatan Pegawai</label>
+                      <div class="card multi-select-card">
+                        <div class="card-body multi-select-body">
+                          <div class="multi-select-grid">
+                            <% if (Array.isArray(jabatan) && jabatan.length) { %>
+                              <% jabatan.forEach(function(item){ %>
+                                <div class="custom-control custom-checkbox" style="padding:.35rem .5rem;border:1px solid #e9ecef;border-radius:10px;display:flex;align-items:center;gap:.5rem;">
+                                  <input type="checkbox" class="custom-control-input" id="jabatan_<%= item.id %>" name="id_jabatan" value="<%= item.id %>">
+                                  <label class="custom-control-label" for="jabatan_<%= item.id %>" style="width:100%;cursor:pointer;"> <%= item.nama_jabatan %> </label>
+                                </div>
+                              <% }) %>
+                            <% } else { %>
+                              <div style="color:#6c757d;">Belum ada data jabatan</div>
+                            <% } %>
+                          </div>
+                          <small class="form-text text-muted" style="margin-top:.5rem;">Anda dapat memilih lebih dari satu jabatan</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                      <a href="/admin/pegawai" class="btn btn-light" data-loading>Kembali</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/scripts/__script-dashbord.ejs') %>

@@ -811,6 +811,65 @@ nav .pagination li.page-item:not(.disabled):focus-within > a.page-link {
     color: #ffffff !important;
 }
 
+/* jabatan multi-select layout */
+.multi-select-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: .5rem !important;
+    max-height: 260px !important;
+    overflow: auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+}
+
+.multi-select-grid .custom-control.custom-checkbox {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: .5rem !important;
+    padding: .45rem .65rem !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+}
+
+.multi-select-grid .custom-control-input {
+    position: static !important;
+    margin: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    opacity: 1 !important;
+    -webkit-appearance: checkbox !important;
+    -moz-appearance: checkbox !important;
+    appearance: checkbox !important;
+}
+
+.multi-select-grid .custom-control-label {
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    cursor: pointer !important;
+    padding-left: 0 !important;
+}
+
+.multi-select-grid .custom-control-label::before,
+.multi-select-grid .custom-control-label::after {
+    display: none !important;
+}
+
+.multi-select-card {
+    border-radius: 12px !important;
+    border: 1px solid #eef2f7 !important;
+    box-shadow: 0 6px 24px rgba(15,142,200,0.08) !important;
+}
+
+.multi-select-body {
+    padding: .75rem 1rem !important;
+}
+
+@media (max-width: 575.98px) {
+    .multi-select-grid { gap: .4rem !important; }
+    .multi-select-grid .custom-control.custom-checkbox { padding: .4rem .6rem !important; }
+}
+
 /* detail page responsive layout */
 .btn-actions-mobile {
     flex-wrap: wrap;

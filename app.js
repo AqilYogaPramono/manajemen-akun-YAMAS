@@ -12,6 +12,7 @@ const authRouter = require('./routes/auth')
 const adminDashboardRouter = require('./routes/admins/dashboard')
 const adminChangePasswordRouter = require('./routes/admins/change-password')
 const adminJabatanRouter = require('./routes/admins/jabatan')
+const adminPegawaiRouter = require('./routes/admins/pegawai')
 
 const app = express()
 
@@ -43,6 +44,7 @@ app.use('/', authRouter)
 app.use('/admin/dashboard', adminDashboardRouter)
 app.use('/admin', adminChangePasswordRouter)
 app.use('/admin/jabatan', adminJabatanRouter)
+app.use('/admin/pegawai', adminPegawaiRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

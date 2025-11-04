@@ -1,0 +1,147 @@
+<%- include('../../partials/headers/__header-dashbaord.ejs', { title: 'Data Pegawai' }) %>
+<%- include('../../partials/navs/__nav-admin.ejs') %>
+<%- include('../../partials/messages/__messages-dashbaord.ejs') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3">
+                            <h4 class="card-title mb-2 mb-sm-0">Data Pegawai</h4>
+                            <a href="/admin/pegawai/buat" class="btn btn-primary btn-sm" data-loading>Tambah Pegawai</a>
+                        </div>
+                        <div>
+                            <table class="table table-hover table-stacked">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>NP</th>
+                                        <th>Jabatan</th>
+                                        <th>Status</th>
+                                        <th style="width: 220px;" class="text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (Array.isArray(data) && data.length) { %>
+                                        <% for (let i = 0; i < data.length; i++) { %>
+                                            <tr>
+                                                <td data-label="No"><%= i + 1 %></td>
+                                                <td data-label="Nama"><%= data[i].nama %></td>
+                                                <td data-label="NP"><%= data[i].nomor_pegawai %></td>
+                                                <td data-label="Jabatan"><%= data[i].jabatan || '-' %></td>
+                                                <td data-label="Status">
+                                                    <% if (data[i].status_akun === 'Aktif') { %>
+                                                        <span class="badge badge-status badge-status-active">Aktif</span>
+                                                    <% } else if (data[i].status_akun === 'Proses') { %>
+                                                        <span class="badge badge-status badge-status-process">Proses</span>
+                                                    <% } else if (data[i].status_akun === 'Non-Aktif') { %>
+                                                        <span class="badge badge-status badge-status-nonactive">Non-Aktif</span>
+                                                    <% } else { %>
+                                                        <span class="badge badge-status badge-status-nonactive">Belum Daftar Ulang</span>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-right" data-label="Aksi">
+                                                    <div class="btn-actions">
+                                                        <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEdit<%= data[i].nomor_pegawai %>">Edit Status</button>
+                                                        <% if (data[i].status_akun === 'Aktif') { %>
+                                                            <button type="button" class="btn btn-sm btn-outline-warning btn-reset-password" data-url="/admin/pegawai/reset-password/<%= data[i].id %>">Reset Password</button>
+                                                        <% } %>
+                                                        <% if (data[i].status_akun === 'Non-Aktif') { %>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-url="/admin/pegawai/delete/<%= data[i].id %>">Hapus</button>
+                                                        <% } %>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="6" class="text-center empty-state">Belum ada data</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if (Array.isArray(data) && data.length) { %>
+    <% for (let i = 0; i < data.length; i++) { %>
+        <div class="modal fade modal-below-navbar" id="modalEdit<%= data[i].nomor_pegawai %>" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Status Pegawai</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/admin/pegawai/update-status-account/<%= data[i].nomor_pegawai %>" method="POST">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="status_akun_<%= data[i].id %>">Status Akun</label>
+                                <select class="form-control" id="status_akun_<%= data[i].id %>" name="status_akun" required>
+                                    <option value="Aktif" <%= (data[i].status_akun === 'Aktif') ? 'selected' : '' %>>Aktif</option>
+                                    <option value="Proses" <%= (data[i].status_akun === 'Proses' || data[i].status_akun === null) ? 'selected' : '' %>>Proses</option>
+                                    <option value="Non-Aktif" <%= data[i].status_akun === 'Non-Aktif' ? 'selected' : '' %>>Non-Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <% } %>
+<% } %>
+
+<div class="modal fade modal-below-navbar" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus pegawai ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-below-navbar" id="modalConfirmResetPassword" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Reset Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin mereset password pegawai ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-warning" id="btnConfirmResetPassword">Reset Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/scripts/__script-dashbord.ejs') %>

@@ -88,6 +88,23 @@
         document.body.appendChild(form);
         form.submit();
     });
+
+    var pendingResetPasswordUrl = null;
+    $(document).on('click', '.btn-reset-password', function() {
+        pendingResetPasswordUrl = this.getAttribute('data-url');
+        $('#modalConfirmResetPassword').modal('show');
+    });
+
+    $(document).on('click', '#btnConfirmResetPassword', function() {
+        if (!pendingResetPasswordUrl) return;
+        $('#modalConfirmResetPassword').modal('hide');
+        showLoading();
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = pendingResetPasswordUrl;
+        document.body.appendChild(form);
+        form.submit();
+    });
 })();
 
 (function(){
