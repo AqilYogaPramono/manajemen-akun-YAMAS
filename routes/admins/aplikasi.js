@@ -1,7 +1,6 @@
 const express = require('express')
 
 const Admin = require('../../models/Admin')
-const Jabatan = require('../../models/Jabatan')
 const { authAdmin } = require('../../middlewares/auth')
 
 const router = express.Router()
@@ -9,9 +8,8 @@ const router = express.Router()
 router.get('/', authAdmin, async (req, res) => {
     try {
         const admin = await Admin.getNama(req.session.adminId)
-        const jabatan = await Jabatan.getAll()
 
-        res.render('admins/jabatan/index', {admin, jabatan})
+        res.render('admins/jabatan/index', {admin})
     } catch (err) {
         console.error(err)
         req.flash('error', 'Internal Server Error')
@@ -51,7 +49,6 @@ router.post('/create', authAdmin, async (req, res) => {
             return res.redirect('/admin/jabatan/buat')
         }
 
-        await Jabatan.store(data)
         req.flash('success', 'Jabatan berhasil dibuat')
         res.redirect('/admin/jabatan')
     } catch (err) {
@@ -64,7 +61,6 @@ router.post('/create', authAdmin, async (req, res) => {
 router.get('/edit/:id', authAdmin, async (req, res) => {
     try {
         const admin = await Admin.getNama(req.session.adminId)
-        const jabatan = await Jabatan.getById(req.params.id)
 
         res.render('admins/jabatan/edit', {
             admin,
@@ -95,7 +91,6 @@ router.post('/update/:id', authAdmin, async (req, res) => {
             return res.redirect(`/admin/jabatan/edit/${id}`)
         }
 
-        await Jabatan.update(id, data)
         req.flash('success', 'Jabatan berhasil diperbarui')
         res.redirect('/admin/jabatan')
     } catch (err) {
@@ -114,7 +109,6 @@ router.post('/hapus/:id', authAdmin, async (req, res) => {
             return res.redirect('/admin/jabatan')
         }
 
-        await Jabatan.delete(id)
         req.flash('success', 'Jabatan berhasil dihapus')
         res.redirect('/admin/jabatan')
     } catch (err) {

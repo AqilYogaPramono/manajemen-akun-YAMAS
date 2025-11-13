@@ -2,7 +2,6 @@ const express = require('express')
 
 const Admin = require('../../models/Admin')
 const Pegawai = require('../../models/Pegawai')
-const Jabatan = require('../../models/Jabatan')
 const { authAdmin } = require('../../middlewares/auth')
 const { generateNomorPegawai } = require('../../middlewares/generate-nomor-pegawai')
 

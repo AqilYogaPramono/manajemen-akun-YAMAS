@@ -150,7 +150,6 @@ router.post('/log', async (req, res) => {
 router.get('/logout', async(req, res) => {
     try {
         req.session.destroy()
-        req.flash('success', 'Logout successful')
         res.redirect('/')
     } catch (err) {
         console.error(err)
