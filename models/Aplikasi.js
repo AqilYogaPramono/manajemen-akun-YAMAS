@@ -10,15 +10,6 @@ class Aplikasi {
         }
     }
 
-    static async checkNamaAplikasiStore(data) {
-        try {
-            const [rows] = await connection.query('SELECT id FROM aplikasi WHERE nama_aplikasi = ?', [data.nama_aplikasi])
-            return rows.length > 0
-        } catch (err) {
-            throw err
-        }
-    }
-
     static async store(data) {
         try {
             const [result] = await connection.query('INSERT INTO aplikasi set ?', [data])
@@ -32,15 +23,6 @@ class Aplikasi {
         try {
             const [rows] = await connection.query('SELECT * FROM aplikasi WHERE id = ?', [id])
             return rows[0]
-        } catch (err) {
-            throw err
-        }
-    }
-
-    static async checkNamaAplikasiUpdate(data, id) {
-        try {
-            const [rows] = await connection.query('SELECT id FROM aplikasi WHERE nama_aplikasi = ? AND id != ?', [data.nama_aplikasi, id])
-            return rows.length > 0
         } catch (err) {
             throw err
         }

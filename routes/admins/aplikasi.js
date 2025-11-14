@@ -51,12 +51,6 @@ router.post('/create', authAdmin, async (req, res) => {
             return res.redirect('/admin/aplikasi/buat')
         }
 
-        if (await Aplikasi.checkNamaAplikasiStore(data)) {
-            req.flash('error', 'Nama Aplikasi sudah ditambahkan sebelumnya')
-            req.flash('data', data)
-            return res.redirect('/admin/aplikasi/buat')
-        }
-
         await Aplikasi.store(data)
         req.flash('success', 'Aplikasi berhasil dibuat')
         res.redirect('/admin/aplikasi')
@@ -98,12 +92,6 @@ router.post('/update/:id', authAdmin, async (req, res) => {
 
         if (!hak_akses) {
             req.flash('error', 'Hak Akses wajib diisi')
-            req.flash('data', data)
-            return res.redirect(`/admin/aplikasi/edit/${id}`)
-        }
-
-        if (await Aplikasi.checkNamaAplikasiUpdate(data, id)) {
-            req.flash('error', 'Nama Aplikasi sudah ditambahkan sebelumnya')
             req.flash('data', data)
             return res.redirect(`/admin/aplikasi/edit/${id}`)
         }
