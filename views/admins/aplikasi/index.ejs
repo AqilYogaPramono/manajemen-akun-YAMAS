@@ -8,8 +8,8 @@
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="card-title mb-0">Data Aplikasi</h4>
+                  <div class="card-header-inline mb-3">
+                    <h4 class="card-title">Data Aplikasi</h4>
                     <a href="/admin/aplikasi/buat" class="btn btn-primary btn-sm" data-loading>Tambah Aplikasi</a>
                   </div>
                   <div>
@@ -38,9 +38,9 @@
                             </tr>
                           <% }) %>
                         <% } else { %>
-                          <tr>
-                            <td colspan="4" class="text-center">Belum ada data</td>
-                          </tr>
+                        <tr>
+                            <td colspan="6" class="text-center empty-state">Belum ada data</td>
+                        </tr>
                         <% } %>
                       </tbody>
                     </table>
