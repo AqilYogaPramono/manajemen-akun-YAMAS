@@ -115,6 +115,59 @@ router.post('/reset-password/:id', authAdmin, async (req, res) => {
     }
 })
 
+router.get('/edit/:id', authAdmin, async(req, res) => {
+    try {
+        const {id} = req.params
+        const admin = await Admin.getNama(req.session.adminId)
+        const pegawai = await Pegawai.getById(id)
+        const aplikasi = await Aplikasi.getAll()
+        const aplikasiPegawai = await Aplikasi.getAplikasiByPegawai(id)
+
+        if (!pegawai) {
+            req.flash('error', 'Data pegawai tidak ditemukan')
+            return res.redirect('/admin/pegawai')
+        }
+
+        res.render('admins/pegawai/edit', {
+            admin,
+            pegawai,
+            aplikasi,
+            aplikasiPegawai,
+            data: req.flash('data')[0]
+        })
+    } catch (err) {
+        console.error(err)
+        req.flash('error', 'Internal Server Error')
+        res.redirect('/admin/pegawai')
+    }
+})
+
+router.post('/update/:id', authAdmin, async (req, res) => {
+    try {
+        const {id} = req.params
+        const { id_aplikasi } = req.body
+
+        if (!id_aplikasi) {
+            req.flash('error', 'Aplikasi wajib diisi')
+            return res.redirect(`/admin/pegawai/edit/${id}`)
+        }
+
+        await Aplikasi.deleteAllPegawaiAplikasi(id)
+
+        const aplikasiArray = Array.isArray(id_aplikasi) ? id_aplikasi : [id_aplikasi]
+        for (const idAplikasi of aplikasiArray) {
+            await Aplikasi.storePegawaiAplikasi(id, idAplikasi)
+        }
+
+        req.flash('success', 'Aplikasi pegawai berhasil diperbarui')
+        res.redirect('/admin/pegawai')
+    } catch (err) {
+        console.error(err)
+        req.flash('error', 'Internal Server Error')
+        res.redirect('/admin/pegawai')
+    }
+})
+
 router.post('/delete/:id', authAdmin, async (req, res) => {
     try {
         const {id} = req.params

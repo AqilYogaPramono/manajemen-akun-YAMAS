@@ -63,6 +63,24 @@ class Aplikasi {
             throw err
         }
     }
+
+    static async getAplikasiByPegawai(id_pegawai) {
+        try {
+            const [rows] = await connection.query('SELECT id_aplikasi FROM pegawai_aplikasi WHERE id_pegawai = ?', [id_pegawai])
+            return rows.map(row => row.id_aplikasi)
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async deleteAllPegawaiAplikasi(id_pegawai) {
+        try {
+            const [result] = await connection.query('DELETE FROM pegawai_aplikasi WHERE id_pegawai = ?', [id_pegawai])
+            return result
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = Aplikasi
