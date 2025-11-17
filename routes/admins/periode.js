@@ -23,7 +23,7 @@ router.get('/', authAdmin, async (req, res) => {
 router.get('/buat', authAdmin, async (req, res) => {
     try {
         const admin = await Admin.getNama(req.session.adminId)
-        const pegawai = await Pegawai.getAll()
+        const pegawai = await Periode.pegawaiNotHavePeriode()
 
         res.render('admins/periode/create', {
             pegawai,
@@ -56,6 +56,12 @@ router.post('/create', authAdmin, async (req, res) => {
 
         if (!periode_berakhir) {
             req.flash('error', 'Priode Berakhir wajib diisi')
+            req.flash('data', data)
+            return res.redirect('/admin/periode/buat')
+        }
+
+        if (await Periode.checkAlreadyPeriode(id_pegawai)) {
+            req.flash('error', 'Pegawai sudah memiliki periode')
             req.flash('data', data)
             return res.redirect('/admin/periode/buat')
         }

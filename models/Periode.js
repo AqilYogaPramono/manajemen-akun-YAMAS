@@ -46,6 +46,24 @@ class Periode {
             throw err
         }
     }
+
+    static async pegawaiNotHavePeriode() {
+        try {
+            const [rows] = await connection.query('SELECT p.* FROM pegawai p LEFT JOIN periode pr ON p.id = pr.id_pegawai WHERE pr.id IS NULL')
+            return rows
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async checkAlreadyPeriode(id_pegawai) {
+        try {
+            const [rows] = await connection.query('SELECT id FROM periode WHERE id_pegawai = ?',[id_pegawai])
+            return rows.length > 0
+        } catch (err) {
+            throw err
+        }
+    }
 }
 
 module.exports = Periode
